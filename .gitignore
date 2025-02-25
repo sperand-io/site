@@ -1,0 +1,74 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+.npm/
+yarn-error.log
+npm-debug.log*
+pnpm-debug.log*
+
+# Next.js build output
+.next/
+.open-next/
+.wrangler/
+out/
+.output/
+build/
+dist/
+
+# Cache
+.cache/
+.turbopack/
+.swc/
+.vercel/
+.contentlayer/
+
+# Env files
+.env
+.env.*
+!.env.example
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor directories and files
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+*.code-workspace
+*.sublime-project
+*.sublime-workspace
+.vs/
+*.swp
+*.swo
+*~
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# Logs
+logs
+*.log
+
+# Testing
+coverage/
+.nyc_output/
+
+# Misc
+.tmp/
+.temp/
+*.tgz
+*.tsbuildinfo
+.eslintcache

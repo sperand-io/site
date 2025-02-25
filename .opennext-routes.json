@@ -1,0 +1,9 @@
+{
+  "routes": [
+    "/",
+    "/posts",
+    "/projects",
+    "/posts/the-future-of-enterprise-software",
+    "/projects/example-project"
+  ]
+}
