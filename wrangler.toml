@@ -3,14 +3,15 @@ main = ".open-next/worker.js"
 compatibility_date = "2024-09-23"
 compatibility_flags = ["nodejs_compat"]
 name = "personal-site-production"
-route = "sperand.io/*"
+routes = [
+  { pattern = "sperand.io", custom_domain = true }
+]
 assets = { directory = ".open-next/assets", binding = "ASSETS" }
 
 # Enhanced caching
 [[kv_namespaces]]
-binding = "KV_CACHE"
-id = "personal-site-cache" 
-preview_id = "personal-site-cache-preview"
+binding = "personal_site_cache"
+id = "11bf309e0e1a4c52b3a850d814661f9c"
 
 [env.staging]
 name = "personal-site-staging"

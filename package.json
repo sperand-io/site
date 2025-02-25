@@ -11,8 +11,8 @@
     "build:cloudflare": "node build-with-opennext.mjs",
     "start": "next start",
     "discover-routes": "node discover-routes.mjs",
-    "dev:worker": "wrangler dev .open-next/worker.js",
-    "deploy:worker": "pnpm build:cloudflare && wrangler deploy"
+    "dev:worker": "npx wrangler dev .open-next/worker.js",
+    "deploy:worker": "pnpm build:cloudflare && npx wrangler deploy"
   },
   "keywords": [],
   "author": "",
