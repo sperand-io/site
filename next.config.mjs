@@ -22,9 +22,4 @@ export default withNextra({
   },
   
   // Use the default Next.js output for OpenNext compatibility
-  
-  // Ensure images work in static export
-  images: {
-    unoptimized: true
-  }
 })

@@ -8,11 +8,12 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "next --turbopack",
     "build": "next build",
-    "build:cloudflare": "node build-with-opennext.mjs",
+    "build:cloudflare": "opennextjs-cloudflare",
     "start": "next start",
     "discover-routes": "node discover-routes.mjs",
     "dev:worker": "npx wrangler dev .open-next/worker.js",
-    "deploy:worker": "pnpm build:cloudflare && npx wrangler deploy"
+    "deploy:worker": "pnpm build:cloudflare && npx wrangler deploy",
+    "preview": "pnpm build:cloudflare && npx wrangler versions upload"
   },
   "keywords": [],
   "author": "",
