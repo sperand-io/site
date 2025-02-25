@@ -1,6 +1,6 @@
+import type { Metadata } from 'next'
 import { generateStaticParamsFor, importPage } from 'nextra/pages'
 import { useMDXComponents } from '../../mdx-components'
-import type { Metadata } from 'next'
 
 export const generateStaticParams = generateStaticParamsFor('mdxPath')
  
@@ -42,11 +42,13 @@ export default async function Page(props) {
   const isHomePage = !params.mdxPath || 
                      params.mdxPath.length === 0 || 
                      (params.mdxPath.length === 1 && params.mdxPath[0] === 'index');
+
+  const isProjectPage = params.mdxPath.includes('projects')
   
   // For the home page, completely remove the title property to prevent the underline
   // This prevents any title-related rendering in the wrapper
   return (
-    <Wrapper toc={toc} meta={isHomePage ? 
+    <Wrapper toc={toc} meta={isHomePage || isProjectPage ? 
       (({ title, ...rest }) => rest)(metadata) : 
       metadata}>
       <MDXContent {...props} params={params} />

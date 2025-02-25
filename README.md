@@ -48,6 +48,7 @@ date: '2023-12-15'
 tags: ['react', 'javascript', 'hooks']
 author: 'Chris Sperandio'
 image: '/images/posts/react-hooks.jpg'
+published: true
 ---
 
 Post content here...
@@ -64,8 +65,8 @@ tags: ['React', 'TypeScript', 'Node.js', 'MongoDB']
 github: 'https://github.com/sperand-io/enterprise-saas'
 demo: 'https://demo.example.com'
 featured: true
-status: 'completed'
 technologies: ['React', 'Node.js', 'MongoDB', 'AWS']
+published: true
 ---
 
 Project content here...

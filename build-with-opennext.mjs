@@ -20,7 +20,51 @@ async function main() {
   
   // Step 3: Run OpenNext builder
   console.log('☁️ Running OpenNext Cloudflare adapter...');
-  execSync('npx opennextjs-cloudflare', { stdio: 'inherit' });
+  try {
+    // Run standard Next.js build first
+    console.log('🏗️ Running Next.js build...');
+    execSync('next build', { stdio: 'inherit' });
+    
+    // Create standalone directory structure that OpenNext expects
+    console.log('🔧 Preparing directory structure for OpenNext...');
+    execSync('mkdir -p .next/standalone/.next/server', { stdio: 'inherit' });
+    
+    // Generate a proper pages-manifest.json that OpenNext looks for
+    if (!fs.existsSync('.next/standalone/.next/server/pages-manifest.json')) {
+      // Get our discovered routes
+      const { routes } = JSON.parse(fs.readFileSync('.discovered-routes.json', 'utf8'));
+      
+      // Create a basic manifest with our routes
+      const manifest = {};
+      
+      // Add entries for each route
+      routes.forEach(route => {
+        // Skip special routes like API routes
+        if (route.startsWith('/api/') || route.includes('.xml')) {
+          return;
+        }
+        
+        // Create path entries for the route
+        const safePath = route === '/' ? '/index' : route;
+        manifest[safePath] = `pages${safePath}.js`;
+      });
+      
+      // Write the manifest file
+      fs.writeFileSync(
+        '.next/standalone/.next/server/pages-manifest.json', 
+        JSON.stringify(manifest, null, 2)
+      );
+      
+      console.log('✅ Created pages-manifest.json with', Object.keys(manifest).length, 'routes');
+    }
+    
+    // Now run OpenNext
+    console.log('☁️ Running OpenNext with prepared directory structure...');
+    execSync('npx opennextjs-cloudflare', { stdio: 'inherit' });
+  } catch (error) {
+    console.error('❌ Error during build process:', error);
+    throw error;
+  }
   
   // Step 4: Apply post-build modifications if needed
   console.log('📝 Verifying build output...');
@@ -69,6 +113,25 @@ function generateRoutesFile() {
   const discoveredRoutes = JSON.parse(
     fs.readFileSync('.discovered-routes.json', 'utf8')
   );
+  
+  // Ensure all post routes are included by adding them explicitly
+  const posts = [];
+  try {
+    const postsDir = path.join(process.cwd(), 'content', 'posts');
+    const files = fs.readdirSync(postsDir);
+    
+    for (const file of files) {
+      if (file.endsWith('.mdx') && file !== 'index.mdx') {
+        const route = `/posts/${file.replace('.mdx', '')}`;
+        if (!discoveredRoutes.routes.includes(route)) {
+          console.log(`Adding missing post route: ${route}`);
+          discoveredRoutes.routes.push(route);
+        }
+      }
+    }
+  } catch (e) {
+    console.error("Error finding post files:", e);
+  }
   
   // Create the OpenNext routes file
   fs.writeFileSync('.opennext-routes.json', JSON.stringify(discoveredRoutes, null, 2));

@@ -7,6 +7,7 @@ interface Frontmatter {
   tags?: string[];
   title?: string;
   description?: string;
+  published?: boolean;
   [key: string]: any;
 }
 
@@ -23,9 +24,10 @@ export async function getPosts() {
     list: await getPageMap('/posts'),
     route: '/posts'
   })
-  
+
   return directories
     .filter((post: Post) => post.name !== 'index')
+    .filter((post: Post) => post.frontMatter?.published)
     .sort((a: Post, b: Post) => {
       // Handle missing dates by using string comparison with fallback to empty string
       const dateA = a.frontMatter?.date || '';

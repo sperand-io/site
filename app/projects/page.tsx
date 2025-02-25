@@ -1,98 +1,79 @@
-import fs from 'fs/promises'
 import Link from 'next/link'
-import path from 'path'
-import { parseFrontmatter } from '../utils/frontmatter'
 
 import type { Metadata } from 'next'
+import { getProjects, getTags, getTechnologies } from './get-projects'
 
 export const metadata: Metadata = {
   title: 'Projects'
 }
 
-// Define a constant for the title to use in the component
-const TITLE = 'Projects'
-
-// Get project data from frontmatter
-async function getProjects() {
-  try {
-    const projectsDir = path.join(process.cwd(), 'content/projects')
-    
-    // Check if directory exists first to avoid errors
-    try {
-      await fs.access(projectsDir)
-    } catch (e) {
-      // Directory doesn't exist, create it
-      await fs.mkdir(projectsDir, { recursive: true })
-      return [] // Return empty array since no projects exist yet
-    }
-    
-    const files = await fs.readdir(projectsDir)
-    
-    const projects = await Promise.all(
-      files
-        .filter(file => file.endsWith('.mdx'))
-        .map(async (file) => {
-          const filePath = path.join(projectsDir, file)
-          const content = await fs.readFile(filePath, 'utf8')
-          const { data } = parseFrontmatter(content)
-          
-          return {
-            id: file.replace(/\.mdx$/, ''),
-            title: data.title,
-            description: data.description,
-            tags: data.tags || [],
-            github: data.github,
-            demo: data.demo,
-            featured: data.featured || false,
-            date: data.date
-          }
-        })
-    )
-    
-    // Sort by date, most recent first
-    return projects.sort((a, b) => {
-      if (a.date && b.date) {
-        return new Date(b.date).getTime() - new Date(a.date).getTime()
-      }
-      return 0
-    })
-  } catch (error) {
-    console.error('Error getting projects:', error)
-    return []
-  }
-}
-
 export default async function ProjectsPage() {
   const projects = await getProjects()
+  const tags = await getTags()
+  const technologies = await getTechnologies()
+  const allTags: Record<string, number> = Object.create(null)
+  const allTechnologies: Record<string, number> = Object.create(null)
   
+  for (const tag of tags) {
+    allTags[tag] ??= 0
+    allTags[tag] += 1
+  }
+  for (const technology of technologies) {
+    allTechnologies[technology] ??= 0
+    allTechnologies[technology] += 1
+  }
+
   return (
     <div className="projects-container">
-      <h1>{TITLE}</h1>
+      <h1>Projects</h1>
       
+      <div className="tags-container">
+        {Object.entries(allTags).map(([tag, count]) => (
+          <Link key={tag} href={`/tags/${tag}`} className="tag-link">
+            {tag} ({count})
+          </Link>
+        ))}
+      </div>
+
+      <div className="tags-container">
+        {Object.entries(allTechnologies).map(([technology, count]) => (
+          <Link key={technology} href={`/technologies/${technology}`} className="tag-link">
+            {technology} ({count})
+          </Link>
+        ))}
+      </div>
+
       <div className="projects-list">
         {projects.map(project => (
-          <div key={project.id} className="project-card">
-            <h2 className="project-title">{project.title}</h2>
-            <p className="project-description">{project.description}</p>
+          <div key={project.name} className="project-card">
+            <h2 className="project-title">{project.frontMatter.title}</h2>
+            <p className="project-description">{project.frontMatter.description}</p>
             
-            <div className="project-tags">
-              {project.tags.map(tag => (
-                <span key={tag} className="project-tag">{tag}</span>
+            <div className="tag-links">
+              <h3>Tags</h3>
+              {project.frontMatter.tags.map(tag => (
+                <Link key={tag} href={`/tags/${tag}`} className="tag-link">{tag}</Link>
+              ))}
+            </div>
+            <div className="tag-links">
+              <h3>Technologies</h3>
+              {project.frontMatter.technologies.map(technology => (
+                <Link key={technology} href={`/technologies/${technology}`} className="tag-link">{technology}</Link>
               ))}
             </div>
             
             <div className="project-links">
-              {project.github && (
-                <Link href={project.github} className="project-link" target="_blank" rel="noopener noreferrer">
+              {project.frontMatter.github && (
+                <Link href={project.frontMatter.github} className="project-link" target="_blank" rel="noopener noreferrer">
                   GitHub
                 </Link>
               )}
-              {project.demo && (
-                <Link href={project.demo} className="project-link" target="_blank" rel="noopener noreferrer">
+              {project.frontMatter.demo && (
+                <Link href={project.frontMatter.demo} className="project-link" target="_blank" rel="noopener noreferrer">
                   Live Demo
                 </Link>
               )}
-              <Link href={`/projects/${project.id}`} className="project-link">
+              <Link href={`/projects/${project.name}`} className="project-link">
                 Details
               </Link>
             </div>
