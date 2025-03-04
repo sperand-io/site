@@ -1,8 +1,13 @@
+import dynamic from 'next/dynamic';
 import { useMDXComponents as getThemeComponents } from 'nextra-theme-blog';
-import React from 'react';
 
 // Get the default MDX components
 const themeComponents = getThemeComponents();
+
+// Dynamically import the client component
+const TweetButtonWrapper = dynamic(() => import('./app/components/tweet-button-wrapper'), {
+  ssr: true,
+});
 
 // Create a custom wrapper component that respects absence of title
 const customWrapper = ({ children, toc, meta }) => {
@@ -14,10 +19,23 @@ const customWrapper = ({ children, toc, meta }) => {
     return <>{children}</>;
   }
   
+  // Check if it's a post page and not a project page or homepage
+  const isPostPage = meta?.title && !['Writing', 'Home', 'Projects'].includes(meta.title);
+  
+  // Create tweet text from defaultTweetText or fallback to title + description
+  const tweetText = meta?.defaultTweetText || 
+    `${meta?.title}${meta?.description ? `: ${meta?.description}` : ''}`;
+  
   // For pages with no title, don't render the h1
   return (
     <div className="wrapper">
       {meta?.title && <h1>{meta.title}</h1>}
+      
+      {/* Display tweet button only for post pages */}
+      {isPostPage && meta?.title && (
+        <TweetButtonWrapper tweetText={tweetText} />
+      )}
+      
       {children}
     </div>
   );

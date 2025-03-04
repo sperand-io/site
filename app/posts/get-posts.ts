@@ -8,6 +8,7 @@ interface Frontmatter {
   title?: string;
   description?: string;
   published?: boolean;
+  defaultTweetText?: string;
   [key: string]: any;
 }
 

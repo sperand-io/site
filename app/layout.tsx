@@ -1,12 +1,13 @@
 import { Inter } from 'next/font/google'
-import { Footer, Layout, Navbar } from 'nextra-theme-blog'
+import { Footer, Layout } from 'nextra-theme-blog'
 import 'nextra-theme-blog/style.css'
 import { Head } from 'nextra/components'
 import { getPageMap } from 'nextra/page-map'
+import { Navbar } from './components/nav-bar'
 import { NavbarRight } from './components/navbar-right'
 import { NeuroShader } from './components/neuro-shader'
-import './styles.css'; // Custom minimal styles
-
+import './globals.css'
+import './styles.css'
  
 const inter = Inter({
   subsets: ['latin'],

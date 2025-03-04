@@ -431,6 +431,33 @@ html.dark .post-title a {
   border-radius: 8px;
 }
 
+/* Tweet Button Styles */
+.tweet-button {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 0.5rem 0.8rem;
+  border-radius: 6px;
+  transition: all 0.2s ease;
+  margin-top: 0.75rem;
+  margin-bottom: 2rem;
+  border: 1px solid var(--border-color);
+}
+
+.tweet-button:hover {
+  background-color: #465A69;
+  color: white;
+  border-color: #465A69;
+}
+
+.dark .tweet-button:hover {
+  background-color: #1DA1F2;
+  color: white;
+  border-color: #1DA1F2;
+}
+
 /* Shader Switcher Styles */
 .shader-switcher {
   position: relative;
@@ -535,6 +562,38 @@ html.dark .post-title a {
   font-size: 1.1rem;
   min-width: 18px;
   display: inline-block;
+}
+
+/* Custom navigation styles */
+.nav-links-container {
+  display: flex;
+  align-items: right;
+}
+
+.nav-link {
+  font-family: var(--font-mono);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--accent-color);
+}
+
+.back-arrow {
+  display: inline-block;
+  margin-right: 0.25rem;
+  transition: transform 0.2s ease;
+}
+
+.nav-link:hover .back-arrow {
+  transform: translateX(-2px);
+}
+
+.x-logo {
+  margin-right: 0.5rem;
 }
 
 /* Z-index structure for shader backgrounds */

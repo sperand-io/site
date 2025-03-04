@@ -48,7 +48,7 @@ export default async function Page(props) {
   // For the home page, completely remove the title property to prevent the underline
   // This prevents any title-related rendering in the wrapper
   return (
-    <Wrapper toc={toc} meta={isHomePage || isProjectPage ? 
+    <Wrapper toc={toc} meta={isHomePage ? 
       (({ title, ...rest }) => rest)(metadata) : 
       metadata}>
       <MDXContent {...props} params={params} />

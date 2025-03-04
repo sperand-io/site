@@ -23,10 +23,12 @@
     "@paper-design/shaders-react": "^0.0.21",
     "next": "^15.1.7",
     "next-themes": "^0.4.4",
+    "next-view-transitions": "^0.3.4",
     "nextra": "^4.2.13",
     "nextra-theme-blog": "^4.2.13",
     "react": "^19.0.0",
-    "react-dom": "^19.0.0"
+    "react-dom": "^19.0.0",
+    "tailwind": "^4.0.0"
   },
   "devDependencies": {
     "@opennextjs/cloudflare": "^0.5.3",
